@@ -24,7 +24,7 @@ jobs:
         run: sleep 30
 
       - name: Start SUT
-        run: java -jar ./artifacts/app-deadline.jar &
+        run: java -jar ./artifacts/app-deadline.jar -P:jdbc.url=jdbc:mysql://localhost:3306/mydb -P:jdbc.user=vasya -P:jdbc.password=qwerty123 &
 
       - name: Build with Gradle
-        run: ./gradlew test --info
+        run: ./gradlew test --info -Dselenide.headless=true
