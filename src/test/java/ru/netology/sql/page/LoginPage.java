@@ -13,10 +13,14 @@ public class LoginPage {
     private SelenideElement passwordField = $("[data-test-id=password] input");
     private SelenideElement loginButton = $("[data-test-id=action-login]");
 
-    public VerificationPage validLogin(DataHelper.Password password) {
-        loginField.setValue(SQLHelper.Users().getLogin());
-        passwordField.setValue(password.getPassword());
-        loginButton.click();
+    public VerificationPage validLogin(DataHelper.UserInfo info) {
+        login(info);
         return new VerificationPage();
+    }
+
+    public void login(DataHelper.UserInfo info) {
+        loginField.setValue(info.getLogin());
+        passwordField.setValue(info.getPassword());
+        loginButton.click();
     }
 }

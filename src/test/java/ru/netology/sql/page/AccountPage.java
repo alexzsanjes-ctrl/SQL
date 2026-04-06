@@ -7,7 +7,7 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class AccountPage {
 
-    private SelenideElement pageHeader = $("[id=root] .heading");
+    private SelenideElement pageHeader = $("[data-test-id=dashboard]");
 
     public AccountPage() {
 

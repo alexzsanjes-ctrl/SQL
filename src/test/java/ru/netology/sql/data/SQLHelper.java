@@ -3,10 +3,12 @@ package ru.netology.sql.data;
 import lombok.SneakyThrows;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 
 
 public class SQLHelper {
@@ -21,16 +23,8 @@ public class SQLHelper {
     }
 
     @SneakyThrows
-    public static DataHelper.User Users() {
-        var usersSQL = "SELECT * FROM users WHERE login='vasya'";
-        try (var conn = getConnection()) {
-            return runner.query(conn, usersSQL, new BeanHandler<>(DataHelper.User.class));
-        }
-    }
-
-    @SneakyThrows
-    public static DataHelper.AuthCode getCode() {
-        var codeSQL = "SELECT * FROM auth_codes WHERE created > DATE_SUB(NOW(), INTERVAL 5 SECOND)";
+    public static DataHelper.AuthCode getAuthCode() {
+        var codeSQL = "SELECT * FROM auth_codes ORDER BY created DESC LIMIT 1";
         try (var conn = getConnection()) {
             return runner.query(conn, codeSQL, new BeanHandler<>(DataHelper.AuthCode.class));
         }
@@ -45,7 +39,7 @@ public class SQLHelper {
     }
 
     @SneakyThrows
-    public static void cleanAuthCardsTable() {
+    public static void cleanCardsTable() {
         var CardsSQL = "DELETE FROM cards";
         try (var conn = getConnection()) {
             runner.update(conn, CardsSQL);

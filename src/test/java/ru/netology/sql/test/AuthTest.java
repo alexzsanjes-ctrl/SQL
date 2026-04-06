@@ -14,11 +14,13 @@ import ru.netology.sql.page.VerificationPage;
 import static com.codeborne.selenide.Selenide.open;
 
 public class AuthTest {
+    DataHelper.UserInfo userInfo = DataHelper.getUserInfo();
+
 
 //    @BeforeAll
 //    static void setupAll() {
 //        Configuration.browser = "firefox";
-//        Configuration.holdBrowserOpen = false;
+//        Configuration.holdBrowserOpen = true;
 //    }
 
     @BeforeEach
@@ -29,15 +31,16 @@ public class AuthTest {
     @AfterAll
     static void cleanTables() {
         SQLHelper.cleanAuthCodesTable();
-        SQLHelper.cleanAuthCardsTable();
+        SQLHelper.cleanCardsTable();
         SQLHelper.cleanUsersTable();
     }
 
     @Test
     void ShouldSuccessAuthorisation() {
         var loginPage = new LoginPage();
-        var verificationPage = loginPage.validLogin(DataHelper.getPassword());
-        var AccountPage = verificationPage.validVerification();
-        AccountPage.heading();
+        var verificationPage = loginPage.validLogin(userInfo);
+        var authCode = SQLHelper.getAuthCode();
+        var accountPage = verificationPage.validVerification(authCode.getCode());
+        accountPage.heading();
     }
 }
